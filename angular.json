@@ -10,10 +10,42 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
+          "skipTests": false,
+          "flat": false,
+          "inlineStyle": true,
+          "inlineTemplate": false,
           "style": "less"
         },
         "@schematics/angular:application": {
           "strict": true
+        },
+        "ng-alain:module": {
+          "routing": true,
+          "skipTests": false
+        },
+        "ng-alain:list": {
+          "skipTests": false
+        },
+        "ng-alain:edit": {
+          "skipTests": false,
+          "modal": true
+        },
+        "ng-alain:view": {
+          "skipTests": false,
+          "modal": true
+        },
+        "ng-alain:curd": {
+          "skipTests": false
+        },
+        "@schematics/angular:module": {
+          "routing": true,
+          "skipTests": false
+        },
+        "@schematics/angular:directive": {
+          "skipTests": false
+        },
+        "@schematics/angular:service": {
+          "skipTests": false
         }
       },
       "root": "",
@@ -28,7 +60,6 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets",
@@ -41,7 +72,20 @@
             "styles": [
               "src/styles.less"
             ],
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true,
+            "allowedCommonJsDependencies": [
+              "@antv/g2",
+              "ajv",
+              "ajv-formats",
+              "date-fns",
+              "file-saver"
+            ]
           },
           "configurations": {
             "production": {
@@ -61,8 +105,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "3mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -71,12 +115,14 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "reuse-tab:build"
+            "browserTarget": "reuse-tab:build",
+            "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {
@@ -107,19 +153,6 @@
             "scripts": []
           }
         },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        },
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
@@ -130,6 +163,15 @@
             "production": {
               "devServerTarget": "reuse-tab:serve:production"
             }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         }
       }
